@@ -45,7 +45,7 @@ public class SmartBankingApp {
                     System.out.println("\t[6]. Drop Existing Account");
                     System.out.println("\t[7]. Exit");
                     System.out.println();
-                    System.out.println("\tEnter an option to continue: ");
+                    System.out.print("\tEnter an option to continue: ");
                     int option = SCANNER.nextInt();
                     SCANNER.nextLine();
 
@@ -79,7 +79,7 @@ public class SmartBankingApp {
                             continue;
                         }
                         for (int i = 0; i < name.length(); i++) {
-                            if(Character.isLetter(name.charAt(i)) || Character.isSpaceChar(name.charAt(i))) {
+                            if(!(Character.isLetter(name.charAt(i)) || Character.isSpaceChar(name.charAt(i)))) {
                                 System.out.printf(ERROR_MSG,"Invalid Name");
                                 valid = false;
                                 break;
@@ -91,18 +91,21 @@ public class SmartBankingApp {
                         valid = true;
                         System.out.print("\tInitial Deposit: ");
                         initialDeposit = SCANNER.nextInt();
+                        SCANNER.nextLine();
                         if (initialDeposit < 5000){
                             System.out.printf(ERROR_MSG,"Insufficient Amount");
                             valid = false;
                             continue;
                         }
+                        
                     } while (!valid);
-
+                    
                     int[] newAccountIds = new int[ids.length+1];
                     String[] newAccountNames = new String[names.length+1];
                     int[] newInitialDeposit = new int[accountBalance.length+1];
+                    
 
-                    for (int i = 0; i < newAccountIds.length; i++) {
+                    for (int i = 0; i < ids.length; i++) {
                         newAccountIds[i] = ids[i];
                         newAccountNames[i] = names[i];
                         newInitialDeposit[i] = accountBalance[i];
@@ -111,16 +114,19 @@ public class SmartBankingApp {
                     newAccountNames[newAccountNames.length-1] = name;
                     newInitialDeposit[newInitialDeposit.length-1] = initialDeposit;
 
+                    ids = newAccountIds;
+                    names = newAccountNames;
+                    accountBalance = newInitialDeposit;
+
                     System.out.println();
-                    System.out.printf(SUCCESS_MSG,"SDB-%05d:%s has been created successfully.",id,name);
+                    System.out.printf(SUCCESS_MSG,String.format("SDB-%05d: %s has been created successfully.",id,name));
                     System.out.print("\tDo you want to add another account (Y/n)?");
                     if (SCANNER.nextLine().strip().toUpperCase().equals("Y")) continue;
                     screen = DASHBOARD;
                     break;
 
-                
-
             }
+            
         } while (true);
 
 
