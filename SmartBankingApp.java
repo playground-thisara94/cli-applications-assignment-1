@@ -61,7 +61,62 @@ public class SmartBankingApp {
                     }
                     break;
 
-                
+                case OPEN_ACCOUNT:
+                    String name;
+                    int initialDeposit;
+                    boolean valid;
+
+                    int id = ids.length+1;
+                    System.out.printf("\tID : SDB-%05d\n",id);
+
+                    do{
+                        valid = true;
+                        System.out.print("\tName: ");
+                        name = SCANNER.nextLine().strip();
+                        if (name.isBlank()){
+                            System.out.printf(ERROR_MSG,"Name can't be empty");
+                            valid = false;
+                            continue;
+                        }
+                        for (int i = 0; i < name.length(); i++) {
+                            if(Character.isLetter(name.charAt(i)) || Character.isSpaceChar(name.charAt(i))) {
+                                System.out.printf(ERROR_MSG,"Invalid Name");
+                                valid = false;
+                                break;
+                            }
+                        }
+                    } while (!valid);
+
+                    do{
+                        valid = true;
+                        System.out.print("\tInitial Deposit: ");
+                        initialDeposit = SCANNER.nextInt();
+                        if (initialDeposit < 5000){
+                            System.out.printf(ERROR_MSG,"Insufficient Amount");
+                            valid = false;
+                            continue;
+                        }
+                    } while (!valid);
+
+                    int[] newAccountIds = new int[ids.length+1];
+                    String[] newAccountNames = new String[names.length+1];
+                    int[] newInitialDeposit = new int[accountBalance.length+1];
+
+                    for (int i = 0; i < newAccountIds.length; i++) {
+                        newAccountIds[i] = ids[i];
+                        newAccountNames[i] = names[i];
+                        newInitialDeposit[i] = accountBalance[i];
+                    }
+                    newAccountIds[newAccountIds.length-1] = id;
+                    newAccountNames[newAccountNames.length-1] = name;
+                    newInitialDeposit[newInitialDeposit.length-1] = initialDeposit;
+
+                    System.out.println();
+                    System.out.printf(SUCCESS_MSG,"SDB-%05d:%s has been created successfully.",id,name);
+                    System.out.print("\tDo you want to add another account (Y/n)?");
+                    if (SCANNER.nextLine().strip().toUpperCase().equals("Y")) continue;
+                    screen = DASHBOARD;
+                    break;
 
                 
 
